@@ -1,6 +1,17 @@
 import pdfplumber
-import re 
+import re  
+import pyodbc
 from typing import List
+
+
+
+
+
+
+
+
+
+
 
 class Cobertura:
     def __init__(self, descricao: str, capital: float, premio_mensal: float, premio_anual: float):
@@ -19,7 +30,7 @@ class Cliente:
     Cobertura("Seguro de vida", 100000, 50.0, 600.0),
     Cobertura("Seguro de carro", 20000, 100.0, 1200.0)
 ]) """
-
+#da para colocar uma entrada se quiser com o caminho para ficar dinamico se todos os arquivos forem iguais
 #caminho PDF estava dando errado pois não estava colocando o nome do arquivo
 caminhopdf =r"C://Users//Nicolas//Documents//Teste-Aditiva//pdfTeste.pdf"#o erro estava dando aqui, tem que colocar um raw de cru na frente
 

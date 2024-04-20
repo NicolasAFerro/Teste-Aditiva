@@ -15,13 +15,13 @@ class Cliente:
         self.idade: int = idade
         self.coberturas: List[Cobertura] = coberturas
 
-cliente1 = Cliente("João", 30, [
+"""cliente1 = Cliente("João", 30, [
     Cobertura("Seguro de vida", 100000, 50.0, 600.0),
     Cobertura("Seguro de carro", 20000, 100.0, 1200.0)
-]) 
+]) """
 
-#caminho PDF 
-caminhopdf: str =r"C:\\Users\\Nicolas\\Documents\\Teste-Aditiva"#o erro estava dando aqui, tem que colocar um raw de cru na frente
+#caminho PDF estava dando errado pois não estava colocando o nome do arquivo
+caminhopdf =r"C://Users//Nicolas//Documents//Teste-Aditiva//pdfTeste.pdf"#o erro estava dando aqui, tem que colocar um raw de cru na frente
 
 def converterPdf(caminhopdf: str) -> Cliente:
     with pdfplumber.open(caminhopdf) as pdf:
@@ -35,16 +35,21 @@ def converterPdf(caminhopdf: str) -> Cliente:
             idade_cliente: int = int(cliente_match.group(2)) 
 
 
-            coberturas: List[Cobertura] = []
-            cobertura_matches = re.findall(r'Cobertura: (.+?) - Capital: (\d+), Prêmio Mensal: (\d+\.?\d*), Prêmio Anual: (\d+\.?\d*)', text)
-            for match in cobertura_matches:
+            coberturas: List[Cobertura] = [] 
+            padrao = r'(.+?)\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)'#finalmente
+            cobertura = re.findall(padrao, text)
+            #cobertura= re.findall(r'(\w+(?:\s\w+)*)\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)', text)
+            for match in cobertura:
                 descricao: str
                 capital: float
                 premio_mensal: float
                 premio_anual: float
                 descricao, capital_str, premio_mensal_str, premio_anual_str = match
+                capital_str = capital_str.replace('.', '').replace(',', '.')
                 capital = float(capital_str)
-                premio_mensal = float(premio_mensal_str)
+                premio_mensal_str = premio_mensal_str.replace(',', '.')
+                premio_mensal = float(premio_mensal_str) 
+                premio_anual_str = premio_anual_str.replace('.', '').replace(',', '.')
                 premio_anual = float(premio_anual_str)
                 cobertura = Cobertura(descricao.strip(), capital, premio_mensal, premio_anual)
                 coberturas.append(cobertura)
@@ -53,13 +58,13 @@ def converterPdf(caminhopdf: str) -> Cliente:
             cliente: Cliente = Cliente(nome_cliente, idade_cliente, coberturas)
             return cliente 
     
-#cliente: Cliente = converterPdf(caminhopdf)
+cliente: Cliente = converterPdf(caminhopdf)
 
 
-print("Nome:", cliente1.nome)
-print("Idade:", cliente1.idade)
+print("Nome:", cliente.nome)
+print("Idade:", cliente.idade)
 print("Coberturas:")
-for cobertura in cliente1.coberturas:
+for cobertura in cliente.coberturas:
     print("  Descrição:", cobertura.descricao)
     print("  Capital:", cobertura.capital)
     print("  Prêmio Mensal:", cobertura.premio_mensal)

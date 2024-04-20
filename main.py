@@ -3,6 +3,7 @@ import re
 import pyodbc
 from typing import List
 
+#conexao com o banco 
 
 
 
@@ -12,7 +13,7 @@ from typing import List
 
 
 
-
+#declaração das classes
 class Cobertura:
     def __init__(self, descricao: str, capital: float, premio_mensal: float, premio_anual: float):
         self.descricao: str = descricao
@@ -30,17 +31,19 @@ class Cliente:
     Cobertura("Seguro de vida", 100000, 50.0, 600.0),
     Cobertura("Seguro de carro", 20000, 100.0, 1200.0)
 ]) """
+
 #da para colocar uma entrada se quiser com o caminho para ficar dinamico se todos os arquivos forem iguais
 #caminho PDF estava dando errado pois não estava colocando o nome do arquivo
 caminhopdf =r"C://Users//Nicolas//Documents//Teste-Aditiva//pdfTeste.pdf"#o erro estava dando aqui, tem que colocar um raw de cru na frente
 
+#funcao para converter o pdf
 def converterPdf(caminhopdf: str) -> Cliente:
     with pdfplumber.open(caminhopdf) as pdf:
         page = pdf.pages[0]  # Extrai apenas a primeira página
         text: str = page.extract_text() 
 
-# padrão "Cliente: Nome do Cliente, Idade"
-        cliente_match = re.search(r'Cliente: (\w+\s\w+), (\d+)', text)
+
+        cliente_match = re.search(r'Cliente: (\w+\s\w+), (\d+)', text)#expressao regular facil
         if cliente_match:
             nome_cliente: str = cliente_match.group(1)
             idade_cliente: int = int(cliente_match.group(2)) 
@@ -56,7 +59,7 @@ def converterPdf(caminhopdf: str) -> Cliente:
                 premio_mensal: float
                 premio_anual: float
                 descricao, capital_str, premio_mensal_str, premio_anual_str = match
-                capital_str = capital_str.replace('.', '').replace(',', '.')
+                capital_str = capital_str.replace('.', '').replace(',', '.')#cada campo esta com alguma coisa
                 capital = float(capital_str)
                 premio_mensal_str = premio_mensal_str.replace(',', '.')
                 premio_mensal = float(premio_mensal_str) 
@@ -65,7 +68,7 @@ def converterPdf(caminhopdf: str) -> Cliente:
                 cobertura = Cobertura(descricao.strip(), capital, premio_mensal, premio_anual)
                 coberturas.append(cobertura)
 
-            # objeto Cliente e retorna
+            #   instancia do objeto Cliente e retorna
             cliente: Cliente = Cliente(nome_cliente, idade_cliente, coberturas)
             return cliente 
     

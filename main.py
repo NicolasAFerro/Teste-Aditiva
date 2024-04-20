@@ -16,12 +16,6 @@ except pyodbc.Error as erro:
 cursor = db_conexao.cursor()
 
 
-
-
-
-
-
-
 #declaração das classes
 class Cobertura:
     def __init__(self, descricao: str, capital: float, premio_mensal: float, premio_anual: float):
@@ -43,7 +37,7 @@ class Cliente:
 
 #da para colocar uma entrada se quiser com o caminho para ficar dinamico se todos os arquivos forem iguais
 #caminho PDF estava dando errado pois não estava colocando o nome do arquivo
-caminhopdf =r"C://Users//Nicolas//Documents//Teste-Aditiva//pdfTeste.pdf"#o erro estava dando aqui, tem que colocar um raw de cru na frente
+caminhopdf =r"C://Users//Nicolas//Documents//Teste-Aditiva//pdfTeste2.pdf"#o erro estava dando aqui, tem que colocar um raw de cru na frente
 
 #funcao para converter o pdf
 try:
